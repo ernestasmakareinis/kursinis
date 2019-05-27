@@ -57,26 +57,15 @@ class Salis{
   }
 };
 
-class Zaidejas{
-  private:
-  string vardas;
-  int taskai = 0;
-  public:
-  void setTaskai( int x){
-    taskai = x;
-  }
-  void addTaskai( int x){
-    taskai = taskai + x;
-  }
-  int getTaskai(){
-    return taskai;
-  }
-  void setVardas(string a){
-    vardas = a;
-  }
-  string getVardas(){
-    return vardas;
-  }
+class Zaidejas : public Salis{
+    public:
+        int kelintaszaidejas;
+        Zaidejas (int numeris)
+        {
+            kelintaszaidejas = numeris;
+            cout << "Sveikas numeri " << numeris << "\n";
+        }
+
 };
 
 /**< ----------------------MAIN------------------------- */
@@ -85,7 +74,6 @@ int main() {
   bool empty_line = false; bool zaidejaspasirinko = false;
   string laimetojas;
 
-  PradziosPavadinimas();    //Uzraso EUROVIZIJA
   srand(time(0));           //Atsiktine tvarka generuojamas skaicius
   ifstream inFile;
   vector<Salis*> salys;
@@ -106,8 +94,19 @@ int main() {
   }
   inFile.close();
 
-    SaliesPasirinkimas(allcountries, zaidejaspasirinko);
-    StiliuPasirinkimuLentele(stiliausnr, zaidejaspasirinko);
+  int zaidejuskaicius;
+  vector<Zaidejas*> zaidejai;
+  cout << "kiek zais zaideju? ";
+  cin >> zaidejuskaicius;
+    for(int i = 1; i <= zaidejuskaicius ; i++)
+        {
+        Zaidejas aktZaidejas(i);
+        cout << "\n";
+        PradziosPavadinimas();    //Uzraso EUROVIZIJA
+        SaliesPasirinkimas(allcountries, zaidejaspasirinko);
+        StiliuPasirinkimuLentele(stiliausnr, zaidejaspasirinko);
+        cout << "\n";
+
 
   cout << endl;
   cout << "Spauskit ENTER"<<endl;
@@ -140,13 +139,17 @@ int main() {
   if(zaidejovardas == laimetojas){
     cout << "\n*** JUS LAIMEJOTE! ***\n";
     cout << "\nZaidete uz sali - " << zaidejovardas <<" . Surinkote " << didziausitaskai << " tasku!\n";
+    cin.ignore();
   }else {
     cout << endl;
     cout << "Jusu salis buvo - " << zaidejovardas;
     cout << endl;
     cout << "\nLaimejo " << laimetojas << " su " << didziausitaskai <<" taskais/u\n";
+    cin.ignore();
   }
+        }
   return 0;
+
 }
 /**< ----------------------MAIN-END-------------------- */
 
