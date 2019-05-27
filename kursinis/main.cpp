@@ -18,16 +18,28 @@ void PradziosPavadinimas();
 void convert (string& s);
 
 string zaidejovardas = "nepasirinkote";
-int StilTaskai [10]; string Stiliai [10];
+int StilTaskai [10];
+string Stiliai [10];
 int random;
 
 
 class Salis{
   private:
   string vardas;
-  int taskai = 0;
+  int taskai;
   public:
-  Salis () : vardas("nera vardo"){}
+    /**< konstruktorius */
+  Salis ()
+  {
+    vardas = "nera vardo";
+    taskai = 0;
+  }
+    /**< kopijavimo konstruktorius */
+  Salis (const Salis &Salis2)
+  {
+  vardas = Salis2.vardas;
+  taskai = Salis2.taskai;
+  }
   void setTaskai( int x){
     taskai = x;
   }
@@ -167,25 +179,21 @@ void SaliesPasirinkimas(int allcountries, bool& zaidejaspasirinko){
 
 void StiliuTaskai(){
     bool empty_line = false;
-    string kazkas;
+    string stilius, stilius2;
     int counter(0);
     srand(time(0));
     ifstream inFile;
     inFile.open("stiliai.txt");
-    /**<  while(!empty_line){
-            inFile >> kazkas;
-        if(kazkas.empty()){
+      while(!empty_line){
+            inFile >> stilius;
+        if(stilius==stilius2  || stilius.empty()){
             empty_line = true;
         }else{
+            random = rand() % 10 + 1;
             StilTaskai[counter] = random;
+            Stiliai[counter]=stilius;
+            stilius2 = stilius;
         }
-        counter++;
-    }*/
-    for(int i = 0;i<10;i++){
-        random = rand() % 10 + 1;
-        inFile >> kazkas;
-        StilTaskai[counter]=random;
-        Stiliai[counter]=kazkas;
         counter++;
     }
     inFile.close();
