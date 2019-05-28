@@ -26,6 +26,7 @@ class Salis{
   string vardas;
   int taskai;
   int originalustaskai;
+  string stilius;
   public:
     /**< konstruktoriai */
   Salis ()
@@ -53,6 +54,12 @@ class Salis{
   {
   vardas = Salis2.vardas;
   taskai = Salis2.taskai;
+  }
+  void setStilius (string a){
+    stilius = a;
+  }
+  void getStilius (){
+    cout << stilius;
   }
   void setTaskai( int x){
     taskai = x;
@@ -91,6 +98,7 @@ class Zaidejas : public Salis{
 };
 
 void SaliesPasirinkimas(vector<Salis*> &vect, int allcountries, bool& zaidejaspasirinko);
+void PrintintTaskus (Salis *sal, int allcountries, string zaidejovardas, bool zaidejaspasirinko, int stiliausnr);
 
 /**< ----------------------MAIN------------------------- */
 int main() {
@@ -100,10 +108,11 @@ int main() {
 
   srand(time(0));           //Atsiktine tvarka generuojamas skaicius
   ifstream inFile;
+
   vector<Salis*> salys;
   inFile.open("salys.txt");
   while(!empty_line){
-        string pavadinimas;
+      string pavadinimas;
       Salis *aktSalis = new Salis();
       inFile >> pavadinimas;
     if(pavadinimas.empty()){
@@ -134,14 +143,19 @@ int main() {
     cout << "Spauskit ENTER"<<endl;
     cout << endl;
     cin.ignore();
+
     for(Salis *sal: salys){
         string vardas;
-        random = rand() % 10 ;      //generuoja skaiciu nuo 0 iki 9
+        random = rand() % 10 ;
+        int saliesstilius = random;
         sal->resetTaskai();
         sal->addTaskai(random+1);   //prideda atsitiktini skaiciu nuo 1 iki 10
         vardas = sal->getVardas();
-        if(vardas != zaidejovardas){
-            int saliesstilius = random;
+        sal->setStilius(Stiliai[saliesstilius]);
+        if(vardas!=zaidejovardas)
+        cout << vardas ;
+        PrintintTaskus(sal,allcountries,zaidejovardas,zaidejaspasirinko,stiliausnr);
+        /**< if(vardas != zaidejovardas){
             cout << vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[saliesstilius];
             sal->addTaskai(StilTaskai [saliesstilius]);
             cout << " = " <<sal->getTaskai() << "\t  [ " <<Stiliai[saliesstilius]<< " ]\n";
@@ -153,12 +167,13 @@ int main() {
             sal->addTaskai(StilTaskai[stiliausnr]);
             cout << " = " <<sal->getTaskai() <<  "\t [ " <<Stiliai[stiliausnr]<< " ]\n";;
             cin.ignore();
-        }
+        }*/
     if(sal->getTaskai() > didziausitaskai){
         didziausitaskai = sal->getTaskai();
         laimetojas = sal->getVardas();
     }
   }
+
   if(zaidejovardas == laimetojas){
     cout << "\n*** JUS LAIMEJOTE! ***\n";
     cout << "\nZaidete uz sali - " << zaidejovardas <<" . Surinkote " << didziausitaskai << " tasku!\n";
@@ -176,6 +191,25 @@ int main() {
 }
 /**< ----------------------MAIN-END-------------------- */
 
+void PrintintTaskus (Salis *sal, int allcountries, string zaidejovardas, bool zaidejaspasirinko, int stiliausnr){
+    string vardas;
+    vardas = sal->getVardas();
+
+        if(vardas != zaidejovardas){
+            int saliesstilius = random;
+            cout << " \t" << sal->getTaskai() << " + \t" << StilTaskai[saliesstilius];
+            sal->addTaskai(StilTaskai [saliesstilius]);
+            cout << " = " <<sal->getTaskai() << "\t  [ " <<Stiliai[saliesstilius]<< " ]\n";
+            if(zaidejaspasirinko)
+            cin.ignore();
+        }else{
+            convert(vardas);
+            cout << "-> "<< vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[stiliausnr];
+            sal->addTaskai(StilTaskai[stiliausnr]);
+            cout << " = " <<sal->getTaskai() <<  "\t [ " <<Stiliai[stiliausnr]<< " ]\n";;
+            cin.ignore();
+        }
+}
 
 void SaliesPasirinkimas(vector<Salis*> &vect, int allcountries, bool& zaidejaspasirinko){
   int nr(0), innr, taskai;
@@ -194,14 +228,14 @@ void SaliesPasirinkimas(vector<Salis*> &vect, int allcountries, bool& zaidejaspa
   cout << endl;
   while(yes){
         cout << "Ar norite prideti dar kokianors sali?(jei taip iveskit 1, jei ne tada 0)\n";
-        cin >> yes;
-        if(yes){
-            string naujasalis;
-            cout << "Iveskite naujos salies pavadinima: ";
-            cin >> naujasalis;
-            Salis *aktSalis = new Salis(naujasalis, 1000);
-            vect.push_back(aktSalis);
-        }
+            cin >> yes;
+            if(yes){
+                string naujasalis;
+                cout << "Iveskite naujos salies pavadinima: ";
+                cin >> naujasalis;
+                Salis *aktSalis = new Salis(naujasalis, 1000);
+                vect.push_back(aktSalis);
+            }
   }
   cout << endl;
   cout << "Pasirink sali ivesdamas jos numeri: ";
@@ -247,7 +281,7 @@ void StiliuPasirinkimuLentele(int& stiliausnr, bool zaidejaspasirinko){
       ifstream inFile;
       inFile.open("stiliai.txt");
 
-      cout << "  === S T I L I A I ===" << endl;
+      cout << "  === M U Z I K O S   S T I L I A I ===" << endl;
 
         while(!empty_line){
         inFile >> stilius;
