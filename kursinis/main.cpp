@@ -97,6 +97,28 @@ class Zaidejas : public Salis{
 
 };
 
+class Laimetojai {
+    private:
+        int kiek;
+        string * laimetojai;
+    public:
+        /**< konstruktorius */
+        Laimetojai ()
+        {
+        kiek = 0;
+        }
+        void setLaimetojaiArray(int a){
+            laimetojai = new string [a];
+            kiek = a;
+        }
+        void setLaimetojas(int vieta, string vardas){
+            laimetojai [vieta] = vardas;
+        }
+        void getLaimetojas(int vieta){
+            cout << laimetojai [vieta];
+        }
+};
+
 void SaliesPasirinkimas(vector<Salis*> &vect, int allcountries, bool& zaidejaspasirinko);
 void PrintintTaskus (Salis *sal, int allcountries, string zaidejovardas, bool zaidejaspasirinko, int stiliausnr);
 
@@ -155,24 +177,14 @@ int main() {
         if(vardas!=zaidejovardas)
         cout << vardas ;
         PrintintTaskus(sal,allcountries,zaidejovardas,zaidejaspasirinko,stiliausnr);
-        /**< if(vardas != zaidejovardas){
-            cout << vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[saliesstilius];
-            sal->addTaskai(StilTaskai [saliesstilius]);
-            cout << " = " <<sal->getTaskai() << "\t  [ " <<Stiliai[saliesstilius]<< " ]\n";
-            if(zaidejaspasirinko)
-            cin.ignore();
-        }else{
-            convert(vardas);
-            cout << "-> "<< vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[stiliausnr];
-            sal->addTaskai(StilTaskai[stiliausnr]);
-            cout << " = " <<sal->getTaskai() <<  "\t [ " <<Stiliai[stiliausnr]<< " ]\n";;
-            cin.ignore();
-        }*/
+
     if(sal->getTaskai() > didziausitaskai){
         didziausitaskai = sal->getTaskai();
         laimetojas = sal->getVardas();
     }
   }
+
+  Laimetojai laimejo();
 
   if(zaidejovardas == laimetojas){
     cout << "\n*** JUS LAIMEJOTE! ***\n";
