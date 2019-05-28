@@ -13,7 +13,6 @@ void SaliesPasirinkimas( int allcountries, bool& zaidejaspasirinko);
 void StiliuTaskai();
 void StiliuPasirinkimuLentele(int& stiliausnr, bool zaidejaspasirinko);
 int StiliausPasirinkimasUser ( int a );
-void KasLaimejo ();
 void PradziosPavadinimas();
 void convert (string& s);
 
@@ -27,12 +26,26 @@ class Salis{
   private:
   string vardas;
   int taskai;
+  int originalustaskai;
   public:
-    /**< konstruktorius */
+    /**< konstruktoriai */
   Salis ()
   {
     vardas = "nera vardo";
     taskai = 0;
+  }
+  Salis (string a)
+  {
+      vardas = a;
+  }
+  Salis (int a)
+  {
+      taskai = a;
+  }
+  Salis (string a, int b)
+  {
+      vardas = a;
+      taskai = b;
   }
     /**< kopijavimo konstruktorius */
   Salis (const Salis &Salis2)
@@ -42,6 +55,10 @@ class Salis{
   }
   void setTaskai( int x){
     taskai = x;
+    originalustaskai = x;
+  }
+  void resetTaskai(){
+    taskai = originalustaskai;
   }
   void addTaskai( int x){
     taskai = taskai + x;
@@ -54,6 +71,10 @@ class Salis{
   }
   string getVardas(){
     return vardas;
+  }
+  /**< unarinio operatorio perkrovimas */
+  void operator-(){
+      taskai--;
   }
 };
 
@@ -98,39 +119,38 @@ int main() {
   vector<Zaidejas*> zaidejai;
   cout << "kiek zais zaideju? ";
   cin >> zaidejuskaicius;
-    for(int i = 1; i <= zaidejuskaicius ; i++)
-        {
-        Zaidejas aktZaidejas(i);
-        cout << "\n";
-        PradziosPavadinimas();    //Uzraso EUROVIZIJA
-        SaliesPasirinkimas(allcountries, zaidejaspasirinko);
-        StiliuPasirinkimuLentele(stiliausnr, zaidejaspasirinko);
-        cout << "\n";
-
-
-  cout << endl;
-  cout << "Spauskit ENTER"<<endl;
-  cout << endl;
-  cin.ignore();
-  for(Salis *sal: salys){
-    string vardas;
-    random = rand() % 10 ;      //generuoja skaiciu nuo 0 iki 9
-    sal->addTaskai(random+1);   //prideda atsitiktini skaiciu nuo 1 iki 10
-    vardas = sal->getVardas();
-    if(vardas != zaidejovardas){
-        int saliesstilius = random;
-        cout << vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[saliesstilius];
-        sal->addTaskai(StilTaskai [saliesstilius]);
-        cout << " = " <<sal->getTaskai() << "\t  [ " <<Stiliai[saliesstilius]<< " ]\n";
-        if(zaidejaspasirinko)
-        cin.ignore();
-    }else{
-        convert(vardas);
-        cout << "-> "<< vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[stiliausnr];
-        sal->addTaskai(StilTaskai[stiliausnr]);
-        cout << " = " <<sal->getTaskai() <<  "\t [ " <<Stiliai[stiliausnr]<< " ]\n";;
-        cin.ignore();
-    }
+  for(int i = 1; i <= zaidejuskaicius ; i++)
+    {
+    Zaidejas aktZaidejas(i);
+    cout << "\n";
+    PradziosPavadinimas();    //Uzraso EUROVIZIJA
+    SaliesPasirinkimas(allcountries, zaidejaspasirinko);
+    StiliuPasirinkimuLentele(stiliausnr, zaidejaspasirinko);
+    cout << "\n";
+    cout << endl;
+    cout << "Spauskit ENTER"<<endl;
+    cout << endl;
+    cin.ignore();
+    for(Salis *sal: salys){
+        string vardas;
+        random = rand() % 10 ;      //generuoja skaiciu nuo 0 iki 9
+        sal->resetTaskai();
+        sal->addTaskai(random+1);   //prideda atsitiktini skaiciu nuo 1 iki 10
+        vardas = sal->getVardas();
+        if(vardas != zaidejovardas){
+            int saliesstilius = random;
+            cout << vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[saliesstilius];
+            sal->addTaskai(StilTaskai [saliesstilius]);
+            cout << " = " <<sal->getTaskai() << "\t  [ " <<Stiliai[saliesstilius]<< " ]\n";
+            if(zaidejaspasirinko)
+            cin.ignore();
+        }else{
+            convert(vardas);
+            cout << "-> "<< vardas << " \t" << sal ->getTaskai() << " + \t" << StilTaskai[stiliausnr];
+            sal->addTaskai(StilTaskai[stiliausnr]);
+            cout << " = " <<sal->getTaskai() <<  "\t [ " <<Stiliai[stiliausnr]<< " ]\n";;
+            cin.ignore();
+        }
     if(sal->getTaskai() > didziausitaskai){
         didziausitaskai = sal->getTaskai();
         laimetojas = sal->getVardas();

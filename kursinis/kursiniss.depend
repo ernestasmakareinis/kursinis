@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1559005907 source:c:\users\ernestas\documents\github\kursinis\kursinis\main.cpp
+	<iostream>
+	<fstream>
+	<iomanip>
+	<cmath>
+	<fstream>
+	<vector>
+	<ctime>
+	<cstdlib>
+
