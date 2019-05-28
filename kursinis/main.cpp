@@ -9,7 +9,6 @@
 
 using namespace std;
 
-void SaliesPasirinkimas( int allcountries, bool& zaidejaspasirinko);
 void StiliuTaskai();
 void StiliuPasirinkimuLentele(int& stiliausnr, bool zaidejaspasirinko);
 int StiliausPasirinkimasUser ( int a );
@@ -37,10 +36,12 @@ class Salis{
   Salis (string a)
   {
       vardas = a;
+      taskai = 0;
   }
   Salis (int a)
   {
       taskai = a;
+      vardas = "bevarde salis";
   }
   Salis (string a, int b)
   {
@@ -89,6 +90,8 @@ class Zaidejas : public Salis{
 
 };
 
+void SaliesPasirinkimas(vector<Salis*> &vect, int allcountries, bool& zaidejaspasirinko);
+
 /**< ----------------------MAIN------------------------- */
 int main() {
   int points, allcountries(0), stiliausnr(0), didziausitaskai(0);
@@ -124,7 +127,7 @@ int main() {
     Zaidejas aktZaidejas(i);
     cout << "\n";
     PradziosPavadinimas();    //Uzraso EUROVIZIJA
-    SaliesPasirinkimas(allcountries, zaidejaspasirinko);
+    SaliesPasirinkimas(salys, allcountries, zaidejaspasirinko);
     StiliuPasirinkimuLentele(stiliausnr, zaidejaspasirinko);
     cout << "\n";
     cout << endl;
@@ -173,13 +176,15 @@ int main() {
 }
 /**< ----------------------MAIN-END-------------------- */
 
-void SaliesPasirinkimas(int allcountries, bool& zaidejaspasirinko){
+
+void SaliesPasirinkimas(vector<Salis*> &vect, int allcountries, bool& zaidejaspasirinko){
   int nr(0), innr, taskai;
+  bool yes = true;
   string pavadinimas;
   string SaliuMasyvas [allcountries];
   ifstream inFile;
   inFile.open("salys.txt");
-  for(int i = 0 ; i < allcountries ; i++){
+  for(Salis *sal: vect){
     inFile >> pavadinimas;
     inFile >> taskai;
     cout << nr+1 << ") " << pavadinimas <<endl;
@@ -187,11 +192,23 @@ void SaliesPasirinkimas(int allcountries, bool& zaidejaspasirinko){
     nr++;
   }
   cout << endl;
+  while(yes){
+        cout << "Ar norite prideti dar kokianors sali?(jei taip iveskit 1, jei ne tada 0)\n";
+        cin >> yes;
+        if(yes){
+            string naujasalis;
+            cout << "Iveskite naujos salies pavadinima: ";
+            cin >> naujasalis;
+            Salis *aktSalis = new Salis(naujasalis, 1000);
+            vect.push_back(aktSalis);
+        }
+  }
+  cout << endl;
   cout << "Pasirink sali ivesdamas jos numeri: ";
   cout << endl;
   cin >> innr;
   if(innr > nr || innr < 1 ){
-    cout << "tokios salies numerio nera"<<endl;
+    cout << "tokios salies numerio nera\n";
     zaidejaspasirinko = false;
   }else{
     zaidejovardas = SaliuMasyvas[innr-1];
